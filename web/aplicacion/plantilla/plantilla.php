@@ -10,7 +10,7 @@ function paginaError($mensaje)
   echo $mensaje;
   echo "<br />\n";
   echo "<br />\n";  echo "<br />\n";
-  echo "<a href='/index.php'>Ir a la pagina principal</a>\n";
+  echo "<a href='/aplicacion/personalizar/index.php'>Ir a la pagina principal</a>\n";
   
   finCuerpo();  
 }
@@ -55,7 +55,8 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
 ?>
     <body>
         <div id="documento">
-        
+            
+
             <header>
                 <h1 id="titulo"><?php echo $cabecera;?></h1>
             </header>
@@ -64,6 +65,11 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
                 
             </div>
             <div id="barraMenu">
+                <div id="imagenHome">
+                    <a href="/index.php">
+                        <img src="/imagenes/24x24/home.png" alt="Inicio">
+                    </a>
+                </div>
                 <ul>
                     <li><a href="/index.php">Inicio</a></li>
                  </ul> 
@@ -76,15 +82,17 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
                    
                     foreach($ubicacion as $elemento){
                         if(isset($elemento["ENLACE"])){
-                            echo "<a href = '{$elemento["ENLACE"]}'>";
+                            echo "<a href='{$elemento["ENLACE"]}'>";
                         }
-                        echo $elemento["TEXTO"] . "&nbsp;&nbsp;";
+                        echo $elemento["TEXTO"];
+                        if(isset($elemento["ENLACE"])){
+                            echo "</a>";
+                        }
+                        echo "&nbsp;&nbsp;";
                     }
                     if (isset($elemento["ADICIONAL"])) {
                         echo "&nbsp;&nbsp;" . $elemento["ADICIONAL"];
                     }
-                    
-                    echo "</a>";
                     
                     echo "&nbsp;&nbsp;";
 
@@ -123,7 +131,7 @@ function finCuerpo()
             <footer>
                 <hr width="90%"  />  
                 <div>
-                    &copy; Copyright  by Profesor
+                    &copy; Copyright  by Ana
                 </div>
             </footer>
         </div>
