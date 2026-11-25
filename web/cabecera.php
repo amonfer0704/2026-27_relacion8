@@ -9,7 +9,7 @@ if (MODO_TRABAJO=="produccion")
         error_reporting(E_ALL);  
 
 spl_autoload_register(function ($clase){
-    $ruta=RUTABASE."/aplicacion/clases/";
+    $ruta=RUTABASE."/aplicacion/clases/$clase.php";
     $fichero=$ruta."$clase.php";
     
     if (file_exists($fichero))
