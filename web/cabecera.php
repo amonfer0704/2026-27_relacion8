@@ -37,6 +37,8 @@ spl_autoload_register(function ($clase){
  * Esto permite recuperar los datos del servidor o crear la sesión si es la primera vez
  */
 session_start();
+$acl = new ACLArray();
+$acceso = new Acceso();
 include(RUTABASE."/aplicacion/plantilla/plantilla.php");
 include_once(RUTABASE."/scripts/librerias/validacion.php");
 
