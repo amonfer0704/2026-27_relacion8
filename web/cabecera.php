@@ -22,7 +22,15 @@ spl_autoload_register(function ($clase){
         }
       else
         {
-            throw new Exception("La clase $clase no se ha encontrado.");
+            $ruta=RUTABASE."/scripts/clases/";
+            $fichero=$ruta."$clase.php";
+            if (file_exists($fichero))
+            {
+                require_once($fichero);
+            }
+            else{
+                throw new Exception("La clase $clase no se ha encontrado.");
+            }
         }
 });
 /**

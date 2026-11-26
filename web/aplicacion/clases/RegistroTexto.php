@@ -18,22 +18,22 @@ class RegistroTexto{
         return $this->_fecha_hora;
     }
 
-    public function __set(mixed $name, $value)
+    public function __set(string $name, mixed $value)
     {
         throw new \Exception("No existe la propiedad $name");
     }
 
-    public function __get(mixed $name)
+    public function __get(string $name)
     {
         throw new \Exception("No existe la propiedad $name");
     }
 
-    public function __isset(mixed $name)
+    public function __isset(string $name)
     {
         throw new \Exception("No existe la propiedad $name");
     }
 
-    public function __unset(mixed $name)
+    public function __unset(string $name)
     {
         throw new \Exception("No existe la propiedad $name");
     }
