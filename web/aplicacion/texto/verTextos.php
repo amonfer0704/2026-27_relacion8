@@ -15,6 +15,7 @@ $barra = [
         "TEXTO" => "ver textos",
     ]
 ];
+
 $textos = isset($_SESSION["textos"])?$_SESSION["textos"]:[];
 $cadena = "";
 $errores = [];
@@ -28,7 +29,7 @@ if(isset($_COOKIE["colorFondo"]) && validaRango($_COOKIE["colorFondo"], COLORESF
     $colorFondo = $_COOKIE ["colorFondo"];
 }
 
-if(isset($_POST["guardar"])){
+if(isset($_POST["registrar"])){
     $cadena = isset($_POST["cadena"]) ? mb_trim($_POST["cadena"]) : "";
 
     if($cadena === ""){
@@ -80,7 +81,7 @@ function cuerpo(array $textos, string $cadena, array $errores)
     <form action ="/aplicacion/texto/verTextos.php" method="post">
         <input type="text" name="cadena" placeholder="Escriba una cadena">
         <br>
-        <input type="submit" value="guardar" name="guardar">
+        <input type="submit" value="registrar" name="registrar">
         <?php
         if(isset($errores["cadena"])){
             echo "<div class='error'>" . $errores["cadena"] . "</div>";
@@ -95,8 +96,6 @@ function cuerpo(array $textos, string $cadena, array $errores)
         ?></textarea>
         <br>
         <input type="submit" name="limpiar" value="Limpiar">
-
-
     </form>
 <?php
 }

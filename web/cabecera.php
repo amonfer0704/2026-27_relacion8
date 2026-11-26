@@ -2,6 +2,10 @@
 define("RUTABASE", dirname(__FILE__));
 //define("MODO_TRABAJO","produccion"); //en "produccion o en desarrollo
 define("MODO_TRABAJO","desarrollo"); //en "produccion o en desarrollo
+/**
+ * Cambiar la fecha y hora a la de Madrid
+ */
+date_default_timezone_set('Europe/Madrid');
 
 if (MODO_TRABAJO=="produccion")
     error_reporting(0);
@@ -9,7 +13,7 @@ if (MODO_TRABAJO=="produccion")
         error_reporting(E_ALL);  
 
 spl_autoload_register(function ($clase){
-    $ruta=RUTABASE."/aplicacion/clases/$clase.php";
+    $ruta=RUTABASE."/aplicacion/clases/";
     $fichero=$ruta."$clase.php";
     
     if (file_exists($fichero))
@@ -21,7 +25,10 @@ spl_autoload_register(function ($clase){
             throw new Exception("La clase $clase no se ha encontrado.");
         }
 });
-
+/**
+ * Esto permite recuperar los datos del servidor o crear la sesión si es la primera vez
+ */
+session_start();
 include(RUTABASE."/aplicacion/plantilla/plantilla.php");
 include_once(RUTABASE."/scripts/librerias/validacion.php");
 
