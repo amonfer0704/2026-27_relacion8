@@ -4,11 +4,7 @@ include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
 $barra = [
     [
-        "TEXTO" => "inicio",
-        "ENLACE" => "/index.php"
-    ],
-    [
-        "TEXTO" => "personalizar",
+        "TEXTO" => "index",
     ]
 ];
 

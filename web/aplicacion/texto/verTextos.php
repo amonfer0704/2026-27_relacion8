@@ -16,6 +16,10 @@ $barra = [
     ]
 ];
 
+if(!$acceso->hayUsuario()){
+    header("Location: /aplicacion/acceso/login.php");
+    exit;
+}
 $textos = isset($_SESSION["textos"])?$_SESSION["textos"]:[];
 $cadena = "";
 $errores = [];

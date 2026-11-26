@@ -15,6 +15,14 @@ $barra = [
         "TEXTO" => "personalizar",
     ]
 ];
+if(!$acceso->hayUsuario()){
+    header("Location: /aplicacion/acceso/login.php");
+    exit;
+}
+if(!$acceso->puedePermiso(1)){
+    paginaError("No tienes permiso para personalizar los colores");
+    exit;
+}
 $colorTexto = "negro";
 $colorFondo = "blanco";
 $errores = [];
