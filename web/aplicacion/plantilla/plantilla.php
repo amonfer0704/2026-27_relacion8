@@ -10,7 +10,7 @@ function paginaError($mensaje)
   echo $mensaje;
   echo "<br />\n";
   echo "<br />\n";  echo "<br />\n";
-  echo "<a href='/aplicacion/personalizar/index.php'>Ir a la pagina principal</a>\n";
+  echo "<a href='/index.php'>Ir a la pagina principal</a>\n";
   
   finCuerpo();  
 }
@@ -50,7 +50,7 @@ function finCabecera()
 
 function inicioCuerpo(string $cabecera, array $ubicacion)
 {
-    global $acceso;
+    $acceso = new Acceso();
 
 ?>
     <body>
@@ -62,7 +62,18 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
             </header>
             
             <div id="barraLogin">
-                
+                <?php 
+                if($acceso->hayUsuario()){?>
+                    Conectado como <?php echo $acceso->getNombre()?>
+
+                <a href="/aplicacion/acceso/logout.php">Cerrar</a>
+                <?php
+                }
+                else{
+                    ?>
+                    <a href="/aplicacion/acceso/login.php">Iniciar sesión</a>
+                    <?php 
+                } ?>
             </div>
             <div id="barraMenu">
                 <div id="imagenHome">
@@ -72,6 +83,17 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
                 </div>
                 <ul>
                     <li><a href="/index.php">Inicio</a></li>
+                    <?php if ($acceso->hayUsuario()) { ?>
+                        <li><a href="/aplicacion/personalizar/index.php">Pag Color</a></li>
+                        <li><a href="/aplicacion/texto/verTextos.php">Ver Textos</a></li>
+                    <?php 
+                    } 
+                    ?>
+                    <?php if ($acceso->puedePermiso(1)) { ?>
+                        <li><a href="/aplicacion/personalizar/personalizar.php">Personalizar</a></li>
+                    <?php
+                    } 
+                    ?>
                  </ul> 
                 
             </div>

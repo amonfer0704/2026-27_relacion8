@@ -4,21 +4,25 @@ include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
 $barra = [
     [
-        "TEXTO" => "inicio",
-        "ENLACE" => "/index.php"
-    ],
-    [
-        "TEXTO" => "personalizar",
-        "ENLACE" => "/aplicacion/personalizar/index.php",
-    ],
-    [
         "TEXTO" => "index",
     ]
 ];
 
+if(!$acceso->hayUsuario()){
+    header("Location: /aplicacion/acceso/login.php");
+    exit;
+}
+
 $visitas = 0;
 if(isset($_COOKIE["visitas"])){
-    $visitas = $_COOKIE["visitas"];
+    try{
+        $visitas = $_COOKIE["visitas"];
+        validaEntero($visitas, 0, 1000000, 0);
+    }
+    catch(TypeError $e){
+        $visitas = 0;
+    }
+    
 }
 
 $visitas = $visitas + 1;
@@ -33,13 +37,17 @@ if(isset($_COOKIE["colorFondo"]) && validaRango($_COOKIE["colorFondo"], COLORESF
     $colorFondo = $_COOKIE ["colorFondo"];
 }
 $usuario=getenv("MYSQL_USER");
-
+$texto = "Esta página cambia con los colores que elijas en personalizar.php";
+$datos = [
+    "texto" => $texto,
+    "visitas" => $visitas
+];
 //dibuja la plantilla de la vista
-inicioCabecera("APLICACION PRIMER TRIMESTRE");
+inicioCabecera("Personalizar");
 cabecera($colorTexto, $colorFondo);
 finCabecera();
-inicioCuerpo("2DAW APLICACION", $barra);
-cuerpo($visitas);  //llamo a la vista
+inicioCuerpo("Personalizar", $barra);
+cuerpo($datos);  //llamo a la vista
 finCuerpo();
 // **********************************************************
 
@@ -57,9 +65,10 @@ function cabecera(string $colorTexto, string $colorFondo)
 }
 
 //vista
-function cuerpo(int $visitas)
+function cuerpo(array $datos)
 {
 ?>
-    <h3>Se ha visitado la página <?php echo $visitas?> veces</h3>
+    <p><?php echo $datos["texto"]?></p>
+    <h3>Se ha visitado la página <?php echo $datos["visitas"]?> veces</h3>
 <?php
 }
