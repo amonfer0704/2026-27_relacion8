@@ -93,8 +93,7 @@ function inicioCuerpo(string $cabecera, array $ubicacion)
                     if (isset($elemento["ADICIONAL"])) {
                         echo "&nbsp;&nbsp;" . $elemento["ADICIONAL"];
                     }
-                    
-                    echo "&nbsp;&nbsp;";
+
 
                     // //otra solución
                     // if(isset($elemento["ENLACE"])){
