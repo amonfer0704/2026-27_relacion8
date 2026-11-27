@@ -2,6 +2,9 @@
 
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
+/**
+ * Barra de inicio con enlace y el último elemento sin enlace
+ */
 $barra = [
     [
         "TEXTO" => "inicio",
@@ -11,14 +14,26 @@ $barra = [
         "TEXTO" => "login",
     ]
 ];
+
+/**
+ * Control de acceso para que solo entren usuarios registrados
+ */
 if($acceso->hayUsuario()){
     header("Location: /index.php");
     exit;
 }
+
+/**
+ * Variables para el formulario
+ */
 $usuario = "";
 $contrasenia = "";
 $errores = [];
 
+/**
+ * Colores por defecto, siendo el texto en negro y el fondo en blanco
+ * Se guarda en las cookies
+ */
 $colorTexto = "negro";
 $colorFondo = "blanco";
 if(isset($_COOKIE["colorTexto"]) && validaRango($_COOKIE["colorTexto"], COLORESTEXTO, 2)){
@@ -28,6 +43,13 @@ if(isset($_COOKIE["colorTexto"]) && validaRango($_COOKIE["colorTexto"], COLOREST
 if(isset($_COOKIE["colorFondo"]) && validaRango($_COOKIE["colorFondo"], COLORESFONDO, 2)){
     $colorFondo = $_COOKIE ["colorFondo"];
 }
+
+/**
+ * Validación del botón enviar que valida los campos usuario y contraseña
+ * Se comprueba con el acl si el usuario existe y si la contraseña
+ * es correcta, además de que no esté borrado. Si no hay errores
+ * se registra en la sesión
+ */
 if(isset($_POST["enviar"])){
     $usuario = isset($_POST["usuario"])?mb_trim($_POST["usuario"]):"";
     if($usuario === ""){
@@ -58,6 +80,10 @@ if(isset($_POST["enviar"])){
         }
     }
 }
+
+/**
+ * Datos para la vista, la contraseña no se devuelve al formulario
+ */
 $datos= ["usuario"=>$usuario];
 $usuario=getenv("MYSQL_USER");
 
@@ -84,17 +110,35 @@ function cabecera(string $colorTexto, string $colorFondo)
 }
 
 //vista
+/**
+ * Método que muestra el formulario y los errores
+ *
+ * @param array $datos Datos del controlador
+ * @param array $errores Errores de validación y de login
+ * @return void
+ */
 function cuerpo(array $datos, array $errores)
 {
 ?>
     
 <?php
+    /**
+     * Mostrar errores en caso de que exista algún error
+     * en el login. Está en un div de clase error
+     */
     if(isset($errores["login"])){
-        echo $errores["login"];
+        echo "div class='error'>" . $errores["login"] . "</div>";
     }
     formulario($datos, $errores);
 }
 
+/**
+ * Método que crea el formulario y muestra los errores si los hay
+ *
+ * @param array $datos Datos del controlador
+ * @param array $errores Errores de validación de los campos
+ * @return void
+ */
 function formulario(array $datos, array $errores){
     ?>
     <form action="/aplicacion/acceso/login.php" method="post">

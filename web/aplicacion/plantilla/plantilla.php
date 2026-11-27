@@ -1,6 +1,6 @@
 <?php
 
-function paginaError($mensaje)
+function paginaError(string $mensaje)
 {
   header("HTTP/1.0 404 $mensaje");
   inicioCabecera("PRACTICA");
@@ -15,7 +15,7 @@ function paginaError($mensaje)
   finCuerpo();  
 }
 
-function inicioCabecera($titulo)
+function inicioCabecera(string $titulo)
 {
 ?>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ function inicioCabecera($titulo)
 <?php
 }
 
-function finCabecera()
+function finCabecera(): void
 {
 ?>
     </head>
@@ -50,7 +50,7 @@ function finCabecera()
 
 function inicioCuerpo(string $cabecera, array $ubicacion)
 {
-    $acceso = new Acceso();
+    global $acceso;
 
 ?>
     <body>

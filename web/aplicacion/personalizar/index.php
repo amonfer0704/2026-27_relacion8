@@ -2,17 +2,26 @@
 
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
+/**
+ * Barra de inicio con enlace y el último elemento sin enlace
+ */
 $barra = [
     [
         "TEXTO" => "index",
     ]
 ];
 
+/**
+ * Control de acceso para que solo entren usuarios registrados
+ */
 if(!$acceso->hayUsuario()){
     header("Location: /aplicacion/acceso/login.php");
     exit;
 }
 
+/**
+ * Contador de visitas en la página de index
+ */
 $visitas = 0;
 if(isset($_COOKIE["visitas"])){
     try{
@@ -27,6 +36,11 @@ if(isset($_COOKIE["visitas"])){
 
 $visitas = $visitas + 1;
 setcookie("visitas", $visitas, time()+60*60*24*2);
+
+/**
+ * Colores por defecto, siendo el texto en negro y el fondo en blanco
+ * Se guarda en las cookies
+ */
 $colorTexto = "negro";
 $colorFondo = "blanco";
 if(isset($_COOKIE["colorTexto"]) && validaRango($_COOKIE["colorTexto"], COLORESTEXTO, 2)){
@@ -37,7 +51,14 @@ if(isset($_COOKIE["colorFondo"]) && validaRango($_COOKIE["colorFondo"], COLORESF
     $colorFondo = $_COOKIE ["colorFondo"];
 }
 $usuario=getenv("MYSQL_USER");
+
+/**
+ * Variable para que se muestre el cambio en la vista
+ */
 $texto = "Esta página cambia con los colores que elijas en personalizar.php";
+/**
+ * Datos con las variables
+ */
 $datos = [
     "texto" => $texto,
     "visitas" => $visitas
@@ -52,6 +73,14 @@ finCuerpo();
 // **********************************************************
 
 //vista
+/**
+ * Función cabecera con los estilos que cambian dependiendo de lo que 
+ * se eliga en personalizar.php
+ *
+ * @param string $colorTexto
+ * @param string $colorFondo
+ * @return void
+ */
 function cabecera(string $colorTexto, string $colorFondo) 
 {
     ?>
@@ -68,6 +97,9 @@ function cabecera(string $colorTexto, string $colorFondo)
 function cuerpo(array $datos)
 {
 ?>
+    <!--Información dentro de la función cuerpo que muestra las visitas 
+    de la página, sabiendo que se guarda en una cookie. De esta forma, 
+    aunque recargues la página, sigue contando cuántas veces has visitado esta página-->
     <p><?php echo $datos["texto"]?></p>
     <h3>Se ha visitado la página <?php echo $datos["visitas"]?> veces</h3>
 <?php

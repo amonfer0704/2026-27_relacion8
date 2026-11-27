@@ -41,7 +41,7 @@
                                       $this->getCodRole("normales"));
             $this->anadirUsuario("Es usuario profesor","profesor","profe",
                                       $this->getCodRole("administradores"));
-            $this->anadirUsuario("Vicente Tejero","vicente","profesor",
+            $this->anadirUsuario("Ana Montiel","ana","profesor",
                                       $this->getCodRole("administradores"));
 
         }
@@ -277,10 +277,8 @@
             $codigo=$this->getCodUsuario($nick);
             
 			//establecer el metodo de encriptado
-            $contrasena= password_hash($contrasena, PASSWORD_BCRYPT);
-
-            if ($this->_usuarios[$codigo]["contrasenia"]!=$contrasena)
-                 return false;
+            if (!password_verify($contrasena, $this->_usuarios[$codigo]["contrasenia"]))
+                return false;
                 
             // es valido
             return true; 
@@ -341,9 +339,10 @@
          */
         function getBorrado(int $codUsuario):bool
         {
+            if (!$this->existeCodUsuario($codUsuario))
+                    return false;
 
-            return $this->_usuarios[$codUsuario]["nombre"];
-        }
+            return $this->_usuarios[$codUsuario]["borrado"];        }
 
         /**
          * Devuelve el role que tiene un usuario concreto

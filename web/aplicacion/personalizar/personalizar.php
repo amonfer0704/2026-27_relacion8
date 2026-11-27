@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Clase de personalizar. Permite elegir entre varios colores en
+ * una lista desplegable para cambiar el color del texto
+ * y del fondo. Las cookies se guardan durante 30 días
+ * Solo pueden acceder los usuarios con permisos 2
+ */
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
 $barra = [
@@ -15,18 +21,34 @@ $barra = [
         "TEXTO" => "personalizar",
     ]
 ];
+/**
+ * Control de acceso para que solo entren usuarios registrados
+ */
 if(!$acceso->hayUsuario()){
     header("Location: /aplicacion/acceso/login.php");
     exit;
 }
-if(!$acceso->puedePermiso(1)){
+/**
+ * Control para el usuario registrado, prohibiendo el acceso 
+ * a los usuarios que no tengan el permiso 2
+ */
+if(!$acceso->puedePermiso(2)){
     paginaError("No tienes permiso para personalizar los colores");
     exit;
 }
-$colorTexto = "negro";
-$colorFondo = "blanco";
+
+/**
+ * Variables para las validaciones del formulario
+ */
 $errores = [];
 $correcto = false;
+
+/**
+ * Colores por defecto, siendo el texto en negro y el fondo en blanco
+ * Se guarda en las cookies
+ */
+$colorTexto = "negro";
+$colorFondo = "blanco";
 
 if(isset($_COOKIE["colorTexto"]) && validaRango($_COOKIE["colorTexto"], COLORESTEXTO, 2)){
     $colorTexto = $_COOKIE ["colorTexto"];
@@ -35,6 +57,11 @@ if(isset($_COOKIE["colorTexto"]) && validaRango($_COOKIE["colorTexto"], COLOREST
 if(isset($_COOKIE["colorFondo"]) && validaRango($_COOKIE["colorFondo"], COLORESFONDO, 2)){
     $colorFondo = $_COOKIE ["colorFondo"];
 }
+
+/**
+ * Validación del botón y los datos donde, al pulsar el botón guardar
+ * se validan los colores de los comboBox
+ */
 if(isset($_POST["guardar"])){
     $nuevoTexto = isset($_POST["colorTexto"])?$_POST["colorTexto"]:"";
     if(!validaRango($nuevoTexto, COLORESTEXTO, 2)){
@@ -55,6 +82,9 @@ if(isset($_POST["guardar"])){
     }
 }
 
+/**
+ * Array de datos con el color del texto y el fondo
+ */
 $datos = [
     "colorTexto" => $colorTexto,
     "colorFondo" => $colorFondo
@@ -84,6 +114,15 @@ function cabecera(string $colorTexto, string $colorFondo)
 }
 
 //vista
+/**
+ * Método cuerpo que muestra un formulario con dos listas desplegables
+ * con colores, los errores de validación y el mensaje si se han guardado bien
+ *
+ * @param array $datos Colores actuales: "colorTexto" y "colorFondo"
+ * @param array $errores Errores de validación
+ * @param boolean $correcto true si los colores se han guardado correctamente
+ * @return void
+ */
 function cuerpo(array $datos, array $errores, bool $correcto)
 {
 
@@ -103,6 +142,11 @@ function cuerpo(array $datos, array $errores, bool $correcto)
             }
             ?>
         </select>
+        <?php 
+        if(isset($errores["colorTexto"])){
+            echo $errores["colorTexto"];
+        }
+        ?>
         <br>
         <label for="colorFondo">Color del fondo</label>
         <br>
@@ -118,6 +162,11 @@ function cuerpo(array $datos, array $errores, bool $correcto)
             }
             ?>
         </select>
+        <?php 
+        if(isset($errores["colorFondo"])){
+            echo $errores["colorFondo"];
+        }
+        ?>
         <br><br>
         <input type="submit" name="guardar" value="Guardar">
     </form>
